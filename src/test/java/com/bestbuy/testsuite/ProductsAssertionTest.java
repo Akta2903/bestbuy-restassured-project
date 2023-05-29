@@ -57,13 +57,14 @@ public class ProductsAssertionTest {
     @Test
     public void test006(){
        response.body("data[8].categories[1].name",equalTo("Housewares"));
-       // response.body("data..categories[1].findAll{it.id==333179}.name",equalTo("Housewares"));
+      // response.body("data.findAll{it.categories.find{it.id==333179}!=null}.categories.name",equalTo("Housewares"));
+      // response.body("data.findAll{it.id==333179}.categories[1].name",equalTo("Housewares"));
 
     }
     //17. Verify the price = 4.99 of forth product
     @Test
     public void test007(){
-        response.body("data[3].price",equalTo(4.99));
+        response.body("data[3].price",equalTo(4.99f));
 
     }
     //18. Verify the Product name = Duracell - D Batteries (4-Pack) of 6th product

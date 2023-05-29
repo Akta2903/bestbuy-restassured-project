@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.hasEntry;
 
 public class StoreAssertionTest  {
     static ValidatableResponse response;
@@ -55,10 +55,10 @@ public class StoreAssertionTest  {
     }
 
     //6)Check hash map values ‘createdAt’ inside storeservices map where store name = Roseville
-    //remaining
+
     @Test
     public void test006() {
-        response.body("data[2].name", hasKey("name"));}
+        response.body("data.findAll{it.name=='Roseville'}", hasItems(hasEntry("createdAt","2016-11-17T17:57:05.853Z")));}
 
     // 7)Verify the state = MN of forth store
     @Test
