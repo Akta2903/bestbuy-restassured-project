@@ -28,10 +28,11 @@ public class ProductCRUDTest extends TestBase {
 
     static String image= "http://img.bbystatic.com/BestBuy_US/images/products/4390/43900_sa.jpg";
 
-    static Object productId;
+    static int productId;
 
+    //Get all products
     @Test
-    public void getProductList()
+    public void test001()
     {
         Response response = given()
                 .when()
@@ -40,8 +41,9 @@ public class ProductCRUDTest extends TestBase {
         response.prettyPrint();
     }
 
+    //Create product
     @Test
-    public void createStoreRecord()
+    public void test002()
     {
         ProductPojo productPojo = new ProductPojo();
         productPojo.setName(name);
@@ -61,23 +63,27 @@ public class ProductCRUDTest extends TestBase {
                 .when()
                 .post("/products");
                 response.then().log().all().statusCode(201);
+              productId=  response.jsonPath().get("id");
                 response.prettyPrint();
+        System.out.println("Id : " + productId);
 
 
     }
+    //get product by id
     @Test
-    public void getStoreById()
+    public void test003()
     {
         Response response = given()
                 .when()
-                .get("/products/9999681");
+                .get("/products"+ "/" + productId);
         response.then().statusCode(200);
         response.prettyPrint();
     }
+    //update the product
     @Test
-    public void updateProduct(){
+    public void test004(){
         ProductPojo productPojo= new ProductPojo();
-        productPojo.setName("Apple");
+        productPojo.setName("Apple"+name);
         productPojo.setType(type);
         productPojo.setPrice(price);
         productPojo.setUpc(upc);
@@ -91,19 +97,20 @@ public class ProductCRUDTest extends TestBase {
                 .contentType(ContentType.JSON)
                 .when()
                 .body(productPojo)
-                .patch("/products/9999681");
+                .patch("/products" + "/" + productId);
         response.prettyPrint();
         response.then().log().all().statusCode(200);
 
         Response response1 = given()
                 .when()
-                .get("/products/9999681");
+                .get("/products" + "/" +productId);
         response.then().statusCode(200);
         response.prettyPrint();
     }
 
+    //delete the record
     @Test
-    public void deleteStore() {
+    public void test005() {
         Response response = given()
                 .when()
                 .delete("/products/9999681");
@@ -112,7 +119,7 @@ public class ProductCRUDTest extends TestBase {
 
         Response response1 = given()
                 .when()
-                .get("/products/9999680");
+                .get("/products" + "/"+ productId);
         response.then().statusCode(200);
         response.prettyPrint();
     }
